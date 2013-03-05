@@ -1,6 +1,6 @@
 # flex-events
 
-There are many event systems for JavaScript, but most of them are simplistic and lack power features which are useful in more complex environments. The goal of flex-events is to be [highly configurable](#Configuration) and support:
+There are many event systems for JavaScript, but most of them are simplistic and lack power features which are useful in more complex environments. The goal of flex-events is to be [highly configurable](#configuration) and support:
 
 * [Custom event bubbling](#controlling-event-propagation)
 * [Asynchronous Propagation](#asynchronous-propagation)
@@ -13,32 +13,32 @@ There are many event systems for JavaScript, but most of them are simplistic and
 
 ###### Table of Contents
 
-1. [Simple Usage](#Simple-Usage)
-2. [Configuration](#Configuration)
-3. [Setup Method](#Setup-Method)
-4. [Event Methods](#Event-Methods)
+1. [Simple Usage](#simple-usage)
+2. [Configuration](#configuration)
+3. [Setup Method](#setup-method)
+4. [Event Methods](#event-methods)
     * [attach](#attach)
     * [detach](#detach)
-    * [hasEvent](#hasEvent)
+    * [hasEvent](#hasevent)
     * [invoke](#invoke)
     * [register](#register)
-    * [registerList](#registerList)
+    * [registerList](#registerlist)
     * [deregister](#deregister)
     * [destroy](#destroy)
-5. [Event Invocation Object](#Event-Invocation-Object)
-6. [Advanced Examples](#Advanced-Examples)
-    * [Private Invocation](#Private-Invocation)
-    * [Events List](#Events-List)
-    * [Strict Mode](#Strict-Mode)
-    * [Custom Method Names](#Custom-Method-Names)
-    * [Controlling Event Propagation](#Controlling-Propagation)
-    * [Asynchronous Propagation](#Asynchronous-Propagation)
-    * [Object Configuration](#Object-Configuration)
-7. [Implementation Notes](#Implementation-Notes)
+5. [Event Invocation Object](#event-invocation-object)
+6. [Advanced Examples](#advanced-examples)
+    * [Private Invocation](#private-invocation)
+    * [Events List](#events-list)
+    * [Strict Mode](#strict-mode)
+    * [Custom Method Names](#custom-method-names)
+    * [Controlling Event Propagation](#controlling-propagation)
+    * [Asynchronous Propagation](#asynchronous-propagation)
+    * [Object Configuration](#object-configuration)
+7. [Implementation Notes](#implementation-notes)
 
 ## Simple Usage
 
-This section provides the obligatory very simple example. Its usage will likely feel familiar. Skip to the [Configuration](#Configuration) or [Advanced Examples](#Advanced-Examples) sections if you're more interested in the advanced features.
+This section provides the obligatory very simple example. Its usage will likely feel familiar. Skip to the [Configuration](#configuration) or [Advanced Examples](#advanced-examples) sections if you're more interested in the advanced features.
 
 ### Including
 
@@ -56,7 +56,7 @@ var flexEvents = require('flex-events');
 
 ### Initializing
 
-Setting up events on an object is as simple as calling [setup](#Setup-Method)
+Setting up events on an object is as simple as calling [setup](#setup-method)
 
 ```javascript
 function ClassA () {
@@ -75,7 +75,7 @@ a.attach('testEvent', function (e, helloArg, worldArg) {
 });
 ```
 
-The first argument sent to the callback is an [Event Invocation](#Event-Invocation-Object) object. If more than one argument is provided to the [invoke](#invoke) method (below), they will be provided to the listener callbacks in the same order.
+The first argument sent to the callback is an [Event Invocation](#event-invocation-object) object. If more than one argument is provided to the [invoke](#invoke) method (below), they will be provided to the listener callbacks in the same order.
 
 ### Invoking
 
@@ -87,7 +87,7 @@ When invoked, the listener from the previous section outputs: `hello world`
 
 ### Bubbling
 
-Sometimes it makes sense to declare an event hierarchy. This is done by sending a parent object to the [setup](#Setup-Method) method.
+Sometimes it makes sense to declare an event hierarchy. This is done by sending a parent object to the [setup](#setup-method) method.
 
 ```javascript
 var b = {};
@@ -118,7 +118,7 @@ Configuration is central to the _flexibility_ of flex-events. Events can be conf
 
 ### Configure Method
 
-Allows the default global configuration settings to be overridden. If you decide to call this method, it can be called as many times as desired, but calling `configure` after the first usage of [setup](#Setup-Method) will have no effect and will produce a warning.
+Allows the default global configuration settings to be overridden. If you decide to call this method, it can be called as many times as desired, but calling `configure` after the first usage of [setup](#setup-method) will have no effect and will produce a warning.
 
 `flexEvents.configure( config )`
 
@@ -126,7 +126,7 @@ Allows the default global configuration settings to be overridden. If you decide
 
 ### Default Configuration
 
-We'll get into some examples [later](#Advanced-Examples), but here's the default config values and what they mean:
+We'll get into some examples [later](#advanced-examples), but here's the default config values and what they mean:
 
 ```javascript
 //default config
@@ -154,25 +154,25 @@ var _config =
 
 ##### arbitraryEvents
 
-`true {Boolean}` If **true**, event names can be any arbitrary string. If **false**, all event names must match an item in the [eventList](#eventList). This may be helpful to prevent typos. See the [Events List](#Events-List) example.
+`true {Boolean}` If **true**, event names can be any arbitrary string. If **false**, all event names must match an item in the [eventList](#eventlist). This may be helpful to prevent typos. See the [Events List](#events-list) example.
 
 ##### arbitraryInvoke
 
-`true {Boolean}` If **true**, events can be invoked by simply calling [invoke](#invoke). If **false**, events can only be invoked using the function returned from [register](#register), and, also, the [invoke](#invoke) and [registerList](#registerList) methods will be disabled. See the [Private Invocation](#Private-Invocation) example.
+`true {Boolean}` If **true**, events can be invoked by simply calling [invoke](#invoke). If **false**, events can only be invoked using the function returned from [register](#register), and, also, the [invoke](#invoke) and [registerList](#registerlist) methods will be disabled. See the [Private Invocation](#private-invocation) example.
 
 ##### eventList
 
-`null {Array|null}` This can be **null** unless `arbitraryEvents == false`, in which case this should be an **array** of strings which represent the event names your system supports. See the [Events List](#Events-List) example.
+`null {Array|null}` This can be **null** unless `arbitraryEvents == false`, in which case this should be an **array** of strings which represent the event names your system supports. See the [Events List](#events-list) example.
 
 > Side note: You might wonder why `arbitraryEvents` is not simply an implied configuration value based on whether `eventList` is null or an array. There are two reasons it is not. The first is that arbitraryEvents can be helpful when configuring on the object (vs. global) level, because you could have a global event list, but only enforce it on specific objects. The second reason is that I would like to expand the warning system; maybe you want to be alerted if an event name is in the list, but don't want it to fail. The warning system could solve that.
 
 ##### strict
 
-`false {Boolean}` If **true**, only event names which have been explicitly registered on an object, or on a child in the object's event bubble chain, can be listened for (attached), detached, or invoked. If **false**, attaching or invoking an event will automatically register it. See the [Strict Mode](#Strict-Mode) example.
+`false {Boolean}` If **true**, only event names which have been explicitly registered on an object, or on a child in the object's event bubble chain, can be listened for (attached), detached, or invoked. If **false**, attaching or invoking an event will automatically register it. See the [Strict Mode](#strict-mode) example.
 
 ##### methods
 
-`(see default above) {Object}` This setting allows you to decide which methods are publicly appended to the object for which events are being setup on. See [Event Methods](#Event-Methods) for a description of each available method, and see [Custom Method Names](#Custom-Method-Names) for an example of how to use this configuration setting.
+`(see default above) {Object}` This setting allows you to decide which methods are publicly appended to the object for which events are being setup on. See [Event Methods](#event-methods) for a description of each available method, and see [Custom Method Names](#custom-method-names) for an example of how to use this configuration setting.
 
 ##### errorHandler
 
@@ -185,7 +185,7 @@ _Current Error Messages_
 
 ##### warningHandler
 
-`null {Function|null}` The same as [errorHandler](#errorHandler) except the error messages are of lower importance, and if no warning handler is provided, the Error object will simply be discarded (it will not be thrown).
+`null {Function|null}` The same as [errorHandler](#errorhandler) except the error messages are of lower importance, and if no warning handler is provided, the Error object will simply be discarded (it will not be thrown).
 
 _Current Warning Messages_
 
@@ -206,13 +206,13 @@ Initializes an object so that events can be registered/attached/invoked/etc on t
 * `parent` `{Object} [optional]` : The object's parent in the event chain.
 * `config` `{Object} [optional]` : If desired, some, or all, global configuration settings can be overridden on a per object basis.
 
-Returns an [Event Methods](#Event-Methods) object.
+Returns an [Event Methods](#event-methods) object.
 
 Setup should never be called more than once on an object, since this may cause unexpected behavior. If you're unsure whether setup has been called, you can check for `obj.__flexEvents`.
 
 ## Event Methods
 
-The object returned by the `flexEvents.setup()` method contains the methods documented below. Some, or all, of these methods may also be appended directly onto the object (`obj` argument in [setup](#Setup-Method)), depending on the [methods](#methods) configuration item. See the [Custom Method Names](#Custom-Method-Names) example.
+The object returned by the `flexEvents.setup()` method contains the methods documented below. Some, or all, of these methods may also be appended directly onto the object (`obj` argument in [setup](#setup-method)), depending on the [methods](#methods) configuration item. See the [Custom Method Names](#custom-method-names) example.
 
 ### attach
 
@@ -221,8 +221,8 @@ Attaches an event listener.
 `.attach( eventName [, options], callback )`
 
 * `eventName` `{String}` : The name of the event to listen for.
-* `options` `{Object} [optional]` : Allows the event listener to be customized. See the _[Options Syntax](#Options-Syntax)_ below.
-* `callback` `{Function}` : The function to be called when the event is invoked. The first argument will be an [Event Invocation](#Event-Invocation-Object) object. The following zero or more arguments will correspond to any extra arguments which were provided to the [invoke method](#invoke).
+* `options` `{Object} [optional]` : Allows the event listener to be customized. See the _[Options Syntax](#options-syntax)_ below.
+* `callback` `{Function}` : The function to be called when the event is invoked. The first argument will be an [Event Invocation](#event-invocation-object) object. The following zero or more arguments will correspond to any extra arguments which were provided to the [invoke method](#invoke).
 
 ###### Options Syntax
 
@@ -230,9 +230,9 @@ The options object has three optional keys which each accept a boolean value:
 
 * `once` If **true**, the listener will be removed after the first time it is called.
 * `bubbleOnly` If **true**, the callback will only be called if the object being listened on did NOT invoke the event. In other words, it will be called if the event was the result of a bubble.
-* `originOnly` The opposite of `bubbleOnly`. If **true**, the callback will only be called for the object which invoked the event. The [example](#originOnly-Example) below may help with clarification. _Note that if both originOnly and bubbleOnly are true, the callback will never be called._
+* `originOnly` The opposite of `bubbleOnly`. If **true**, the callback will only be called for the object which invoked the event. The [example](#originonly-example) below may help with clarification. _Note that if both originOnly and bubbleOnly are true, the callback will never be called._
 
-> An unintended, but potentially useful, side-effect of the `options` object is that, because the options object becomes part of the [Event Invocation](#Event-Invocation-Object) object, it is accessible from inside the callback. Therefore, it could be used to send arbitrary information to the callback. Just be careful in your choice of key names in case a future version of this software adds meaning to a previously ignored key/value pair.
+> An unintended, but potentially useful, side-effect of the `options` object is that, because the options object becomes part of the [Event Invocation](#event-invocation-object) object, it is accessible from inside the callback. Therefore, it could be used to send arbitrary information to the callback. Just be careful in your choice of key names in case a future version of this software adds meaning to a previously ignored key/value pair.
 
 _originOnly example_
 
@@ -262,7 +262,7 @@ Detaches an event listener.
 * `options` `{Object} [optional]` : Same syntax as described in the [attach method](#attach). Think of this as an additional search parameter. When provided, not only will the `callback` have to match, but the options values must match in order to successfully detach a listener.
 * `callback` `{Function} [optional]` : If provided, zero or one event listeners are removed depending on if a listener is found matching this callback function. If multiple listeners share the same callback, only the oldest matching listener will be detached. If `callback` is not provided, all listeners matching `eventName` will be removed.
 
-When `callback` is provided, the function returns true if an event listener was removed, otherwise false. When `callback` is not provided, the function's output is the same as the [hasEvent](#hasEvent) method.
+When `callback` is provided, the function returns true if an event listener was removed, otherwise false. When `callback` is not provided, the function's output is the same as the [hasEvent](#hasevent) method.
 
 ### hasEvent
 
@@ -281,17 +281,17 @@ Invokes (aka emits/triggers) an event.
 * `eventName` `{String}` : The name of the event to invoke.
 * `arg1-argN` `[optional]` : Additional arguments of any type can be passed to invoke, which will be, in turn, passed to all listener callbacks in the same order.
 
-`invoke` is disabled when [arbitraryInvoke](#arbitraryInvoke) is false.
+`invoke` is disabled when [arbitraryInvoke](#arbitraryinvoke) is false.
 
 ### register
 
 > _method is private by default_
 
-Registers an event on an object. Calling register directly is typically unnecessary unless [strict](#strict) is set to true, or [arbitraryInvoke](#arbitraryInvoke) is false.
+Registers an event on an object. Calling register directly is typically unnecessary unless [strict](#strict) is set to true, or [arbitraryInvoke](#arbitraryinvoke) is false.
 
 `.register( eventName )`
 
-Returns a function which is a shortcut for invoking this event. See the [Private Invocation](#Private-Invocation) example.
+Returns a function which is a shortcut for invoking this event. See the [Private Invocation](#private-invocation) example.
 
 ### registerList
 
@@ -304,7 +304,7 @@ Registers multiple events at once. This method accepts any combination of array(
 obj.registerList('eventOne', [ 'eventTwo', 'eventThree' ], 'eventFour', 'eventFive');
 ```
 
-This method returns nothing, which is why it is disabled when [arbitraryInvoke](#arbitraryInvoke) is false, since there would be no way to invoke the registered events.
+This method returns nothing, which is why it is disabled when [arbitraryInvoke](#arbitraryinvoke) is false, since there would be no way to invoke the registered events.
 
 ### deregister
 
@@ -314,13 +314,13 @@ Deregisters an event.
 
 `.deregister( eventName )`
 
-It should be very rare to need this method, and, should you decide to use it, you may find its usage to be counter-intuitive. Calling `deregister` does not _necessarily_ remove event listeners, nor cause [hasEvent](#hasEvent) to return false, nor prevent [attach](#attach) from being called for this `eventName` in [strict](#strict) mode. This is possible because of events which bubble up from children. When an event is registered on an object, it becomes implicitly registered on all objects in its parent chain. However, if no children have `eventName` registered, or when `.deregister(eventName)` is called on those children, then all listeners will be removed and the event will be fully deregistered as expected.
+It should be very rare to need this method, and, should you decide to use it, you may find its usage to be counter-intuitive. Calling `deregister` does not _necessarily_ remove event listeners, nor cause [hasEvent](#hasevent) to return false, nor prevent [attach](#attach) from being called for this `eventName` in [strict](#strict) mode. This is possible because of events which bubble up from children. When an event is registered on an object, it becomes implicitly registered on all objects in its parent chain. However, if no children have `eventName` registered, or when `.deregister(eventName)` is called on those children, then all listeners will be removed and the event will be fully deregistered as expected.
 
 ### destroy
 
 > _method is private by default_
 
-Essentially reverses the [setup](#Setup-Method) process by cleaning up all public methods appended onto the object and removing references which would prevent garbage collection from reclaiming the object. In a large application, it is **very important** to call `destroy` when the object is no longer needed.
+Essentially reverses the [setup](#setup-method) process by cleaning up all public methods appended onto the object and removing references which would prevent garbage collection from reclaiming the object. In a large application, it is **very important** to call `destroy` when the object is no longer needed.
 
 `.destroy()`
 
@@ -338,13 +338,13 @@ The first argument to listener callbacks is an `EventInvocation` object. For the
 
 ### options
 
-`e.options` `{Object}` The [options](#Options-Syntax) object supplied to the [attach](#attach) method. If no options argument was supplied, `e.options` will be an empty object `{}`.
+`e.options` `{Object}` The [options](#options-syntax) object supplied to the [attach](#attach) method. If no options argument was supplied, `e.options` will be an empty object `{}`.
 
 ### stop
 
 `e.stop()` Prevents any further event listeners from being called for this event invocation. Similar to [event.stopImmediatePropagation](https://developer.mozilla.org/en-US/docs/DOM/event.stopImmediatePropagation) in DOM events.
 
-See the [Controlling Event Propagation](#Controlling-Propagation) example.
+See the [Controlling Event Propagation](#controlling-propagation) example.
 
 ### stopBubble
 
@@ -352,7 +352,7 @@ See the [Controlling Event Propagation](#Controlling-Propagation) example.
 
 ### pause
 
-`e.pause()` Pause is provided to allow asynchronous propagation. After calling `pause`, event propagation will not continue until [resume](#resume) is called. See the [Asynchronous Propagation](#Asynchronous-Propagation) example.
+`e.pause()` Pause is provided to allow asynchronous propagation. After calling `pause`, event propagation will not continue until [resume](#resume) is called. See the [Asynchronous Propagation](#asynchronous-propagation) example.
 
 ### resume
 
@@ -403,7 +403,7 @@ first callback done
 */
 ```
 
-See also the [Asynchronous Propagation](#Asynchronous-Propagation) example.
+See also the [Asynchronous Propagation](#asynchronous-propagation) example.
 
 ## Advanced Examples
 
@@ -411,7 +411,7 @@ Each of these examples can be found in the `examples` directory. They are setup 
 
 ### Private Invocation
 
-Sometimes you may want to prevent `.invoke('anyRandomEvent')` from happening. You could use [strict](#strict), but a safer way may be to use private invocation with [arbitraryInvoke](#arbitraryInvoke) disabled.
+Sometimes you may want to prevent `.invoke('anyRandomEvent')` from happening. You could use [strict](#strict), but a safer way may be to use private invocation with [arbitraryInvoke](#arbitraryinvoke) disabled.
 
 ```javascript
 flexEvents.configure({ arbitraryInvoke: false }); // disable arbitraryInvoke
@@ -442,7 +442,7 @@ data
 
 ### Events List
 
-If you'd like to establish a fixed list of events which your system supports (maybe you want a centralized list, or maybe it's just to prevent typos), you can do this using the [arbitraryEvents](#arbitraryEvents) and [eventList](#eventList) settings.
+If you'd like to establish a fixed list of events which your system supports (maybe you want a centralized list, or maybe it's just to prevent typos), you can do this using the [arbitraryEvents](#arbitraryevents) and [eventList](#eventlist) settings.
 
 ```javascript
 flexEvents.configure({ arbitraryEvents: false, eventList: [ 'EVENT_1', 'EVENT_2' ], errorHandler: console.log });
@@ -484,11 +484,11 @@ Output
 
 ### Custom Method Names
 
-By default, [attach](#attach), [detach](#detach), [hasEvent](#hasEvent), and [invoke](#invoke) are publicly appended to each object initialized using [setup](#Setup-Method). However, any method listed under [Event Methods](#Event-Methods) can be made automatically public or private, and you can even rename them.
+By default, [attach](#attach), [detach](#detach), [hasEvent](#hasevent), and [invoke](#invoke) are publicly appended to each object initialized using [setup](#setup-method). However, any method listed under [Event Methods](#event-methods) can be made automatically public or private, and you can even rename them.
 
-**Important:** Changing the accessibility or name of a method only affects how and what is publicly appended to the object. It does NOT effect the object returned by [setup](#Setup-Method), which will always have the full set of methods with the default names.
+**Important:** Changing the accessibility or name of a method only affects how and what is publicly appended to the object. It does NOT effect the object returned by [setup](#setup-method), which will always have the full set of methods with the default names.
 
-In the example below, we will override some of the [defaults](#Default-Configuration) by:
+In the example below, we will override some of the [defaults](#default-configuration) by:
 * renaming `attach` to `on`
 * making `detach` a private method
 * making `register` a public method
@@ -521,7 +521,7 @@ As long as [bubble](#bubble) is enabled, event propagation normally occurs as fo
 
 The `flexEvents` object is always the last parent in the bubble chain.
 
-This propagation can be interrupted by calling [e.stop](#stop) or [e.stopBubble](#stopBubble).
+This propagation can be interrupted by calling [e.stop](#stop) or [e.stopBubble](#stopbubble).
 
 ```javascript
 var a = {};
@@ -611,7 +611,7 @@ done reading
 
 ### Object Configuration
 
-Sometimes it may be desirable to override global configuration settings on individual objects. This can be accomplished using the third parameter of the [setup](#Setup-Method) method.
+Sometimes it may be desirable to override global configuration settings on individual objects. This can be accomplished using the third parameter of the [setup](#setup-method) method.
 
 ```javascript
 flexEvents.configure({ arbitraryEvents: false, eventList: [ 'EVENT_1', 'EVENT_2' ], errorHandler: console.log });
@@ -634,7 +634,7 @@ Output
 
 There are a few last uncommon or non-obvious scenarios which should be addressed.
 
-##### Passing a non-events-enabled object as the `parent` argument in [setup](#Setup-Method)
+##### Passing a non-events-enabled object as the `parent` argument in [setup](#setup-method)
 
 Consider this scenario:
 
@@ -651,14 +651,14 @@ So, the moral of the story: don't pass in a parent which you don't intend to set
 
 ##### Configuring public methods on the `flexEvents` object
 
-As previously discussed [here](#methods) and [here](#Custom-Method-Names), you can decide which [event methods](#Event-Methods) you would like to be public, and even what to name them. As you should know by now, the global `flexEvents` object is, itself, events-enabled, and therefore it should be possible to adjust its public methods as well. However, since `flexEvents.setup(flexEvents)` is called internally, we can't pass a custom config object, and all of the public methods are already setup before we could ever have a chance to adjust the global configuration.
+As previously discussed [here](#methods) and [here](#custom-method-names), you can decide which [event methods](#event-methods) you would like to be public, and even what to name them. As you should know by now, the global `flexEvents` object is, itself, events-enabled, and therefore it should be possible to adjust its public methods as well. However, since `flexEvents.setup(flexEvents)` is called internally, we can't pass a custom config object, and all of the public methods are already setup before we could ever have a chance to adjust the global configuration.
 
-To work around this, you can override the default [methods](#methods) configuration in the first call to [configure](#Configure-Method). In addition to updating the global configuration, those changes will take effect on the `flexEvents` object. However, further calls to `configure` will only update the global config, and not the `flexEvents` object. This behavior is provided because you might want the configuration on the `flexEvents` object to be different from the global configuration.
+To work around this, you can override the default [methods](#methods) configuration in the first call to [configure](#configure-method). In addition to updating the global configuration, those changes will take effect on the `flexEvents` object. However, further calls to `configure` will only update the global config, and not the `flexEvents` object. This behavior is provided because you might want the configuration on the `flexEvents` object to be different from the global configuration.
 
 There are two unique behaviors which are notable in this scenario:
 
 * [destroy](#destroy) cannot be made public. `methods:{destroy:'destroy'}` will affect the global configuration, but will be ignored in regards to the `flexEvents` object.
-* [setup](#Setup-Method) and [configure](#Configure-Method) can be renamed (or even removed, although removing `setup` is probably a bad idea).
+* [setup](#setup-method) and [configure](#configure-method) can be renamed (or even removed, although removing `setup` is probably a bad idea).
 
 In this example, we will rename `setup` to `init` and make the `invoke` method public for all objects except `flexEvents`:
 
