@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flex-Events Browser Test</title>
+	<script type="text/javascript" src="../flex-events.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+
+// Initializing
+
+function ClassA () {
+    flexEvents.setup(this);
+}
+
+// Listening
+
+var a = new ClassA();
+a.attach('testEvent', function (e, helloArg, worldArg) {
+    document.write(helloArg + ' ' + worldArg + '<br/>');
+});
+
+// Invoking
+
+a.invoke('testEvent', "hello", "world");
+
+// Bubbling
+
+var b = {};
+flexEvents.setup(b, a);
+
+b.invoke('testEvent', 'one', 'two');
+
+// Global listening
+
+flexEvents.attach('testEvent', function (e, arg1, arg2) {
+    document.write('global ' + arg1 + ' ' + arg2 + '<br/>');
+});
+
+b.invoke('testEvent', 'three', 'four');
+
+</script>
+</body>
+</html>
