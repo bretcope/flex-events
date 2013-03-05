@@ -31,7 +31,7 @@ There are many event systems for JavaScript, but most of them are simplistic and
     * [Events List](#events-list)
     * [Strict Mode](#strict-mode)
     * [Custom Method Names](#custom-method-names)
-    * [Controlling Event Propagation](#controlling-propagation)
+    * [Controlling Event Propagation](#controlling-event-propagation)
     * [Asynchronous Propagation](#asynchronous-propagation)
     * [Object Configuration](#object-configuration)
 7. [Implementation Notes](#implementation-notes)
@@ -234,7 +234,7 @@ The options object has three optional keys which each accept a boolean value:
 
 > An unintended, but potentially useful, side-effect of the `options` object is that, because the options object becomes part of the [Event Invocation](#event-invocation-object) object, it is accessible from inside the callback. Therefore, it could be used to send arbitrary information to the callback. Just be careful in your choice of key names in case a future version of this software adds meaning to a previously ignored key/value pair.
 
-_originOnly example_
+###### originOnly example
 
 ```javascript
 function listener (e) { console.log(arguments); }
@@ -344,7 +344,7 @@ The first argument to listener callbacks is an `EventInvocation` object. For the
 
 `e.stop()` Prevents any further event listeners from being called for this event invocation. Similar to [event.stopImmediatePropagation](https://developer.mozilla.org/en-US/docs/DOM/event.stopImmediatePropagation) in DOM events.
 
-See the [Controlling Event Propagation](#controlling-propagation) example.
+See the [Controlling Event Propagation](#controlling-event-propagation) example.
 
 ### stopBubble
 
