@@ -18,7 +18,8 @@
     "events",
     "bubble",
     "flexible",
-    "propagate"
+    "propagate",
+    "asynchronous"
   ],
   "analyze": false,
   "license": "MIT",
