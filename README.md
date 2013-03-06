@@ -45,8 +45,11 @@ This section provides the obligatory very simple example. Its usage will likely 
 ###### Node.js:
 
 flex-events can be installed using npm:
-    npm install flex-events
+```
+npm install flex-events
+```
 
+Then included using require:
 ```javascript
 var flexEvents = require('flex-events');
 ```
