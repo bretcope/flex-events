@@ -624,6 +624,7 @@ var flexEvents = new function ()
 		
 		this.origin = mgr.obj;
 		this.obj = mgr.obj;
+		this.event = event;
 		
 		args[0] = this; // the zero index is initially the same string as the event argument, so we just replace that.
 		
@@ -656,11 +657,17 @@ var flexEvents = new function ()
 		{
 			_running = true;
 			
-			var listeners;
+			var listeners, starListeners;
 			var l;
 			do
 			{
 				listeners = _mgr.events[event].listeners;
+				starListeners = event !== '*' ? _mgr.events['*'].listeners : null;
+				
+				if (starListeners)
+				{
+					listeners = listeners ? listeners.concat(starListeners) : starListeners;
+				}
 				
 				if (listeners)
 				{

@@ -342,6 +342,10 @@ The first argument to listener callbacks is an `EventInvocation` object. For the
 
 `e.obj` `{Object}` A reference to the object being listened on. `obj` will be different from `origin` when the listener is called as the result of event bubbling. In other words, you can use `if (e.origin === e.obj)` to check whether the event originated on the object you attached to, or one of its children.
 
+### event
+
+`e.event` `{String}` The name of the event being invoked.
+
 ### options
 
 `e.options` `{Object}` The [options](#options-syntax) object supplied to the [attach](#attach) method. If no options argument was supplied, `e.options` will be an empty object `{}`.
