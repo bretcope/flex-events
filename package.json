@@ -1,13 +1,13 @@
 {
   "name": "flex-events",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Atlantis Flight Development <bret@atlantisflight.org>",
   "description": "A powerful, flexible and highly customizable event system for JavaScript. Supports all browsers and Node.js.",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Bret Copeland",
       "email": "bret@atlantisflight.org"
-    } 
+    }
   ],
   "main": "./flex-events.js",
   "repository": {
