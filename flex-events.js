@@ -600,7 +600,7 @@ var flexEvents = new function ()
 			return 0;
 		}
 		
-		if (autoRegister)
+		if (autoRegister || event === '*')
 			return this.register(event) ? 1 : 0;
 		
 		return 1;
@@ -662,9 +662,8 @@ var flexEvents = new function ()
 			do
 			{
 				listeners = _mgr.events[event].listeners;
-				starListeners = event !== '*' ? _mgr.events['*'].listeners : null;
 				
-				if (starListeners)
+				if (event !== '*' && _mgr.events['*'] && (starListeners = _mgr.events['*'].listeners))
 				{
 					listeners = listeners ? listeners.concat(starListeners) : starListeners;
 				}
